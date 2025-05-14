@@ -14,20 +14,23 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Certificate from '../components/Certificate';
 
 const Checkout = () => {
-  const { cartItems, clearCart } = useCart();
-  const [adopterName, setAdopterName] = useState('');
-  const [animalName, setAnimalName] = useState('');
+  const { cartItems} = useCart();
+  const [adoptions, setAdoptions] = useState(
+    cartItems.map(() => ({ adopterName: '', animalName: '' }))
+  );
   const [showCertificate, setShowCertificate] = useState(false);
   const navigate = useNavigate();
 
   const handlePayment = () => {
-    if (adopterName.trim() === '' || animalName.trim() === '') {
+    const incomplete = adoptions.some(
+      (entry) => entry.adopterName.trim() === '' || entry.animalName.trim() === ''
+    );
+    if (incomplete) {
       alert('Zadej prosím jméno pro certifikát a jméno zvířete.');
       return;
     }
 
     setShowCertificate(true);
-    clearCart();
   };
 
   return (
@@ -53,29 +56,48 @@ const Checkout = () => {
           <Typography variant="body1" gutterBottom>
             Každé zvíře stojí 200 Kč. Zadej své jméno, které bude uvedeno na certifikátu.
           </Typography>
+          {cartItems.map((item, index) => (
+      <Box key={item.id} sx={{ mb: 3, p: 2, border: '1px solid #ccc', borderRadius: 2 }}>
+          <Typography variant="h6">{item.type}</Typography>
           <TextField
             label="Tvoje jméno"
-            variant="outlined"
-            value={adopterName}
-            onChange={(e) => setAdopterName(e.target.value)}
+            value={adoptions[index].adopterName}
+            onChange={(e) => {
+                const newAdoptions = [...adoptions];
+                newAdoptions[index].adopterName = e.target.value;
+                setAdoptions(newAdoptions);
+            }}
             fullWidth
-            sx={{ my: 2 }}
-          />
+            sx={{ my: 1 }}
+            />
           <TextField
             label="Jméno zvířete"
-            variant="outlined"
-            value={animalName}
-            onChange={(e) => setAnimalName(e.target.value)}
+            value={adoptions[index].animalName}
+            onChange={(e) => {
+                const newAdoptions = [...adoptions];
+                newAdoptions[index].animalName = e.target.value;
+                setAdoptions(newAdoptions);
+            }}
             fullWidth
-            sx={{ my: 2 }}
           />
+      </Box>
+    ))}. -
+
           <Button variant="contained" color="primary" onClick={handlePayment}>
             Zaplatit a získat certifikát
           </Button>
         </>
       ) : (
         <>
-            <Certificate adopterName={adopterName} animalName={animalName} cartItems={cartItems} />
+          {cartItems.map((item, index) => (
+            <Certificate 
+              key={item.id} 
+              adopterName={adoptions[index].adopterName} 
+              animalName={adoptions[index].animalName} 
+              cartItems={[item]} 
+            />
+          ))}
+
             <Box textAlign="center" mt={4}>
                 <Typography variant="h5" gutterBottom>
                 Děkujeme za adopci!
