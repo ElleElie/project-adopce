@@ -26,7 +26,7 @@ const Checkout = () => {
       (entry) => entry.adopterName.trim() === '' || entry.animalName.trim() === ''
     );
     if (incomplete) {
-      alert('Zadej prosím jméno pro certifikát a jméno zvířete.');
+      alert('Zadej prosím jméno pro certifikát a pojmenuj zvíře.');
       return;
     }
 
@@ -57,8 +57,12 @@ const Checkout = () => {
             Každé zvíře stojí 200 Kč. Zadej své jméno, které bude uvedeno na certifikátu.
           </Typography>
           {cartItems.map((item, index) => (
-      <Box key={item.id} sx={{ mb: 3, p: 2, border: '1px solid #ccc', borderRadius: 2 }}>
-          <Typography variant="h6">{item.type}</Typography>
+          <Box key={item.id} sx={{ mb: 3, p: 2, border: '1px solid #ccc', borderRadius: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+            <img src={item.image} alt={item.name} style={{ width: 60, height: 60, borderRadius: '50%' }} />
+            <Typography variant="h6">{item.name} ({item.type})</Typography>
+          </Box>
+
           <TextField
             label="Tvoje jméno"
             value={adoptions[index].adopterName}
