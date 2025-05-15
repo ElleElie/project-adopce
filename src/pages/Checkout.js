@@ -16,7 +16,7 @@ import Certificate from '../components/Certificate';
 const Checkout = () => {
   const { cartItems} = useCart();
   const [adoptions, setAdoptions] = useState(
-    cartItems.map(() => ({ adopterName: '', animalName: '' }))
+    cartItems.map((item) => ({ adopterName: '', animalName: '', animal: item }))
   );
   const [showCertificate, setShowCertificate] = useState(false);
   const navigate = useNavigate();
@@ -64,7 +64,10 @@ const Checkout = () => {
             value={adoptions[index].adopterName}
             onChange={(e) => {
                 const newAdoptions = [...adoptions];
-                newAdoptions[index].adopterName = e.target.value;
+                newAdoptions[index] = {
+                  ...newAdoptions[index],
+                  adopterName: e.target.value,
+              };
                 setAdoptions(newAdoptions);
             }}
             fullWidth
@@ -75,13 +78,16 @@ const Checkout = () => {
             value={adoptions[index].animalName}
             onChange={(e) => {
                 const newAdoptions = [...adoptions];
-                newAdoptions[index].animalName = e.target.value;
+                newAdoptions[index] = {
+                  ...newAdoptions[index],
+                  animalName: e.target.value,
+                };
                 setAdoptions(newAdoptions);
             }}
             fullWidth
           />
       </Box>
-    ))}. -
+    ))}
 
           <Button variant="contained" color="primary" onClick={handlePayment}>
             Zaplatit a získat certifikát
@@ -89,15 +95,7 @@ const Checkout = () => {
         </>
       ) : (
         <>
-          {cartItems.map((item, index) => (
-            <Certificate 
-              key={item.id} 
-              adopterName={adoptions[index].adopterName} 
-              animalName={adoptions[index].animalName} 
-              cartItems={[item]} 
-            />
-          ))}
-
+            <Certificate adoptions={adoptions}/>
             <Box textAlign="center" mt={4}>
                 <Typography variant="h5" gutterBottom>
                 Děkujeme za adopci!

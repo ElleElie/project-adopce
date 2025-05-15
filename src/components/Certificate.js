@@ -1,29 +1,32 @@
 import React from 'react';
 import { Typography, Box, Card, CardMedia, CardContent } from '@mui/material';
 
-const Certificate = ({ adopterName, animalName, cartItems }) => {
-  console.log(adopterName, animalName, cartItems);
+const Certificate = ({ adoptions }) => {
+  console.log(adoptions);
 
   return (
     <Box sx={{ textAlign: 'center' }}>
       <Typography variant="h4" gutterBottom>
         Tvůj certifikát adopce
       </Typography>
-      {cartItems.map((animal) => (
-        <Card key={animal.index} sx={{ maxWidth: 345, margin: 'auto' }}>
+      {adoptions.map((entry, index) => (
+        <Card key={index} sx={{ maxWidth: 345, margin: '20px auto' }}>
           <CardMedia
             component="img"
             height="200"
-            image={animal.image}
-            alt={animal.name}
+            image={entry.animal.image}
+            alt={entry.animal.name}
           />
           <CardContent>
             <Typography variant="h5">Certifikát adopce</Typography>
             <Typography variant="body1">
-              Zvíře: <strong>{animalName}</strong>
+              Zvíře: <strong>{entry.animal.name}</strong>
             </Typography>
             <Typography variant="body1">
-              Adoptováno: <strong>{adopterName}</strong>
+              Jméno: <strong>{entry.animalName}</strong>
+            </Typography>
+            <Typography variant="body1">
+              Adoptoval/a: <strong>{entry.adopterName}</strong>
             </Typography>
           </CardContent>
         </Card>
