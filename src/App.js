@@ -6,7 +6,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 
 function App() {
-  console.log("App rendering..."); // Debugging log
+  console.log("App rendering..."); 
 
   return (
     <Routes>

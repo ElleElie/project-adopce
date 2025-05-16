@@ -5,15 +5,14 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import animals from '../data/data';
 import AnimalCard from '../components/AnimalCard';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext'; 
+import { useCart } from '../context/CartContext';
 
 function AnimalList() {
   const navigate = useNavigate();
-  const { cartItems } = useCart(); // Získání položek košíku
+  const { cartItems } = useCart();
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
-      {/* Horní lišta */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <IconButton onClick={() => navigate('/')}>
           <ArrowBackIcon />
@@ -26,10 +25,19 @@ function AnimalList() {
         </IconButton>
       </Box>
 
-      {/* Výpis zvířat */}
-      <Grid container spacing={2}>
+      <Grid container spacing={3}>
         {animals.map((animal) => (
-          <Grid item xs={12} sm={6} md={4} key={animal.index}>
+          <Grid 
+            item 
+            xs={12} 
+            sm={6} 
+            md={4} 
+            key={animal.id} 
+            sx={{ 
+              display: 'flex',       
+              justifyContent: 'center', 
+            }}
+          >
             <AnimalCard animal={animal} />
           </Grid>
         ))}
@@ -39,4 +47,3 @@ function AnimalList() {
 }
 
 export default AnimalList;
-
